@@ -1,0 +1,1 @@
+Server=localhost;Database=komfort;Integrated Security=True;TrustServerCertificate=true;

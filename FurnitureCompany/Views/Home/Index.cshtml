@@ -1,0 +1,58 @@
+﻿@model List<FurnitureCompany.Models.Product>
+
+@{
+    ViewData["Title"] = "Продукция";
+}
+
+<div class="container mt-4">
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12 text-center mb-4">
+            <img src="~/images/logo.png" alt="Логотип" style="max-height: 80px;" onerror="this.style.display='none'">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center" style="color: #355CBD;">Мебельная компания "Комфорт"</h1>
+            <h4 class="text-center mb-4">Список продукции</h4>
+
+            @if (Model.Count == 0)
+            {
+                <p class="text-center text-muted">Нет данных для отображения.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead style="background-color: #355CBD; color: white;">
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Артикул</th>
+                                <th>Мин. стоимость (₽)</th>
+                                <th class="text-center">Время изготовления (ч)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td>@product.Name</td>
+                                    <td>@product.Article</td>
+                                    <td>@product.MinPartnerCost.ToString("0.00")</td>
+                                    <td class="text-center fw-bold">@product.ProductionTimeHours</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

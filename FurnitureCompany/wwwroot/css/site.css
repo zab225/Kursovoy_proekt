@@ -1,0 +1,84 @@
+/* Основные стили для всего приложения */
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background-color: #D2DFFF; /* основной фон страницы */
+    font-family: 'Candara', 'Segoe UI', sans-serif;
+}
+
+.container {
+    flex: 1 0 auto; /* растягиваем контейнер, чтобы футер уходил вниз */
+    width: 100%;
+    background-color: white; /* фон для контента (по ТЗ основной белый) */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Стили для таблицы */
+.table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+    .table thead th {
+        background-color: #355CBD; /* акцентный цвет */
+        color: white;
+        border-bottom: none;
+        font-weight: 600;
+    }
+
+    .table tbody tr {
+        transition: background-color 0.15s ease-in-out;
+    }
+
+        .table tbody tr:hover {
+            background-color: #f0f5ff; /* светло-голубое выделение строк */
+        }
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    color: #355CBD;
+}
+
+/* Футер */
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: #355CBD;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto; /* дополнительная страховка */
+}
+
+    footer a {
+             text-decoration: underline;
+    }
+
+        footer a:hover {
+            text-decoration: none;
+        }
+
+/* Стили для сообщений об ошибках */
+.alert {
+    border-radius: 8px;
+    font-family: 'Candara', sans-serif;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}
