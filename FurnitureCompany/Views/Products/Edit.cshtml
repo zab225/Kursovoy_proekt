@@ -1,0 +1,55 @@
+@model FurnitureCompany.Models.ProductEditViewModel
+
+@{
+    ViewData["Title"] = "Добавление продукции";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center" style="color: #355CBD;">Добавление новой продукции</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Article" class="form-label"></label>
+                    <input asp-for="Article" class="form-control" />
+                    <span asp-validation-for="Article" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductTypeId" class="form-label"></label>
+                    <select asp-for="ProductTypeId" asp-items="Model.ProductTypes" class="form-select">
+                        <option value="">-- Выберите тип --</option>
+                    </select>
+                    <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="MainMaterialId" class="form-label"></label>
+                    <select asp-for="MainMaterialId" asp-items="Model.MaterialTypes" class="form-select">
+                        <option value="">-- Выберите материал --</option>
+                    </select>
+                    <span asp-validation-for="MainMaterialId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="MinPartnerCost" class="form-label"></label>
+                    <input asp-for="MinPartnerCost" class="form-control" type="number" step="0.01" min="0" />
+                    <span asp-validation-for="MinPartnerCost" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn" style="background-color: #355CBD; color: white;">Сохранить</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

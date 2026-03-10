@@ -12,69 +12,118 @@ namespace FurnitureCompany.Data
 
         public DatabaseHelper(IConfiguration configuration)
         {
-            // вычитываем строку из конфига
-            var connStr = configuration.GetConnectionString("DefaultConnection");
-            if (string.IsNullOrEmpty(connStr))
-            {
-                throw new Exception("А где строка подключения? Добавь в appsettings.json!");
-            }
-            _connectionString = connStr;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(_connectionString))
+                throw new Exception("Строка подключения не найдена");
         }
 
-        public List<Product> GetProductsWithProductionTime()
+        public List<ProductType> GetProductTypes()
         {
-            // тут будем складывать результат
-            var productList = new List<Product>();
-
-            // using гарантирует, что закроется даже при ошибке
-            using (var dbConnection = new SqlConnection(_connectionString))
+            var list = new List<ProductType>();
+            using (var conn = new SqlConnection(_connectionString))
             {
-                try
+                conn.Open();
+                var cmd = new SqlCommand("SELECT id, name, coefficient FROM product_types ORDER BY name", conn);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    dbConnection.Open();
-
-                    // запрос: группируем продукты и суммируем время по цехам
-                    // если в цехах ничего нет — SUM вернёт null, тогда ISNULL подставит 0
-                    string sql = @"
-                        SELECT 
-                            p.id,
-                            p.name,
-                            p.article,
-                            p.min_partner_cost,
-                            CEILING(ISNULL(SUM(pw.production_time_hours), 0)) AS total_hours
-                        FROM products p
-                        LEFT JOIN product_workshops pw ON p.id = pw.product_id
-                        GROUP BY p.id, p.name, p.article, p.min_partner_cost
-                        ORDER BY p.name";
-
-                    using (var sqlCmd = new SqlCommand(sql, dbConnection))
-                    using (var rdr = sqlCmd.ExecuteReader())
+                    while (reader.Read())
                     {
-                        // пока читаем, добавляем объекты в список
-                        while (rdr.Read())
+                        list.Add(new ProductType
                         {
-                            var product = new Product
-                            {
-                                Id = rdr.GetInt32(0),
-                                Name = rdr.GetString(1),
-                                Article = rdr.GetString(2),
-                                MinPartnerCost = rdr.GetDecimal(3),
-                                // Округляем вверх, чтобы не было 0 часов (иначе менеджеры занервничают)
-                                ProductionTimeHours = Convert.ToInt32(rdr.GetDecimal(4))
-                            };
-                            productList.Add(product);
-                        }
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Coefficient = reader.GetDecimal(2)
+                        });
                     }
                 }
-                catch (SqlException ex)
+            }
+            return list;
+        }
+
+        public List<MaterialType> GetMaterialTypes()
+        {
+            var list = new List<MaterialType>();
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT id, name, loss_percent FROM material_types ORDER BY name", conn);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    // пишем в консоль, чтоб видеть в отладке
-                    Console.WriteLine($"SQL ERROR: {ex.Message}");
-                    // возвращаем пустой список, но не падаем
+                    while (reader.Read())
+                    {
+                        list.Add(new MaterialType
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            LossPercent = reader.GetDecimal(2)
+                        });
+                    }
                 }
             }
+            return list;
+        }
 
-            return productList;
+        public Product GetProductById(int id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT id, product_type_id, name, article, min_partner_cost, main_material_id FROM products WHERE id = @id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Product
+                        {
+                            Id = reader.GetInt32(0),
+                            ProductTypeId = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Article = reader.GetString(3),
+                            MinPartnerCost = reader.GetDecimal(4),
+                            MainMaterialId = reader.GetInt32(5)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void InsertProduct(Product product)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand(@"
+                    INSERT INTO products (product_type_id, name, article, min_partner_cost, main_material_id)
+                    VALUES (@ptid, @name, @article, @cost, @mmid)", conn);
+                cmd.Parameters.AddWithValue("@ptid", product.ProductTypeId);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@article", product.Article);
+                cmd.Parameters.AddWithValue("@cost", product.MinPartnerCost);
+                cmd.Parameters.AddWithValue("@mmid", product.MainMaterialId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand(@"
+                    UPDATE products 
+                    SET product_type_id = @ptid, name = @name, article = @article, 
+                        min_partner_cost = @cost, main_material_id = @mmid
+                    WHERE id = @id", conn);
+                cmd.Parameters.AddWithValue("@ptid", product.ProductTypeId);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@article", product.Article);
+                cmd.Parameters.AddWithValue("@cost", product.MinPartnerCost);
+                cmd.Parameters.AddWithValue("@mmid", product.MainMaterialId);
+                cmd.Parameters.AddWithValue("@id", product.Id);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
