@@ -1,11 +1,11 @@
 @model FurnitureCompany.Models.ProductEditViewModel
 
 @{
-    ViewData["Title"] = "Редактирование продукции";
+    ViewData["Title"] = "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°";
 }
 
 <div class="container mt-4">
-    <h2 class="text-center" style="color: #355CBD;">Редактирование продукции</h2>
+    <h2 class="text-center" style="color: #355CBD;">Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
@@ -27,7 +27,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="ProductTypeId" class="form-label"></label>
                     <select asp-for="ProductTypeId" asp-items="Model.ProductTypes" class="form-select">
-                        <option value="">-- Выберите тип --</option>
+                        <option value="">-- РІС‹Р±РµСЂРёС‚Рµ С‚РёРї --</option>
                     </select>
                     <span asp-validation-for="ProductTypeId" class="text-danger"></span>
                 </div>
@@ -35,7 +35,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="MainMaterialId" class="form-label"></label>
                     <select asp-for="MainMaterialId" asp-items="Model.MaterialTypes" class="form-select">
-                        <option value="">-- Выберите материал --</option>
+                        <option value="">-- РІС‹Р±РµСЂРёС‚Рµ РјР°С‚РµСЂРёР°Р» --</option>
                     </select>
                     <span asp-validation-for="MainMaterialId" class="text-danger"></span>
                 </div>
@@ -47,8 +47,8 @@
                 </div>
 
                 <div class="form-group text-center">
-                    <button type="submit" class="btn" style="background-color: #355CBD; color: white;">Сохранить</button>
-                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn" style="background-color: #355CBD; color: white;">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">РћС‚РјРµРЅР°</a>
                 </div>
             </form>
         </div>

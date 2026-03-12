@@ -1,4 +1,4 @@
-/* Основные стили для всего приложения */
+/*      */
 html {
     height: 100%;
 }
@@ -8,14 +8,14 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
-    background-color: #D2DFFF; /* основной фон страницы */
+    background-color: #D2DFFF; /*    */
     font-family: 'Candara', 'Segoe UI', sans-serif;
 }
 
 .container {
-    flex: 1 0 auto; /* растягиваем контейнер, чтобы футер уходил вниз */
+    flex: 1 0 auto; /*  ,     */
     width: 100%;
-    background-color: white; /* фон для контента (по ТЗ основной белый) */
+    background-color: white; /*    (   ) */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -23,7 +23,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Стили для таблицы */
+/*    */
 .table {
     background-color: white;
     border-radius: 8px;
@@ -32,7 +32,7 @@ body {
 }
 
     .table thead th {
-        background-color: #355CBD; /* акцентный цвет */
+        background-color: #355CBD; /*   */
         color: white;
         border-bottom: none;
         font-weight: 600;
@@ -43,40 +43,43 @@ body {
     }
 
         .table tbody tr:hover {
-            background-color: #f0f5ff; /* светло-голубое выделение строк */
+            background-color: #f0f5ff; /* -   */
         }
 
-/* Заголовки */
+/*  */
 h1, h2, h3, h4, h5, h6 {
     color: #355CBD;
 }
 
-/* Футер */
+/*  */
 footer {
     flex-shrink: 0;
     width: 100%;
-    background-color: #355CBD;
-    color: white;
+    background-color: #fff;
+    color: #333;
     text-align: center;
     padding: 15px 0;
-    margin-top: auto; /* дополнительная страховка */
+    margin-top: auto;
+    border-top: 1px solid #e0e0e0;
 }
 
     footer a {
-             text-decoration: underline;
+        color: #355CBD;
+        text-decoration: underline;
     }
 
         footer a:hover {
             text-decoration: none;
+            color: #2a4a99;
         }
 
-/* Стили для сообщений об ошибках */
+/*      */
 .alert {
     border-radius: 8px;
     font-family: 'Candara', sans-serif;
 }
 
-/* Адаптивность */
+/*  */
 @media (max-width: 768px) {
     .container {
         padding: 15px;

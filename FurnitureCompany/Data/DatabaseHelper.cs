@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using FurnitureCompany.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -33,6 +33,33 @@ namespace FurnitureCompany.Data
                             Id = reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Coefficient = reader.GetDecimal(2)
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        public List<Product> GetProductsWithProductionTime()
+        {
+            var list = new List<Product>();
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT id, product_type_id, name, article, min_partner_cost, main_material_id FROM products ORDER BY name", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Product
+                        {
+                            Id = reader.GetInt32(0),
+                            ProductTypeId = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Article = reader.GetString(3),
+                            MinPartnerCost = reader.GetDecimal(4),
+                            MainMaterialId = reader.GetInt32(5),
+                            ProductionTimeHours = 0
                         });
                     }
                 }
