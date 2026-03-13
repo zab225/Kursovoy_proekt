@@ -41,7 +41,6 @@
                                 <th>Наименование</th>
                                 <th>Артикул</th>
                                 <th>Мин. стоимость (₽)</th>
-                                <th class="text-center">Время изготовления (ч)</th>
                                 <th class="text-center">Цеха</th>
                             </tr>
                         </thead>
@@ -52,7 +51,6 @@
                                     <td>@product.Name</td>
                                     <td>@product.Article</td>
                                     <td>@product.MinPartnerCost.ToString("0.00")</td>
-                                    <td class="text-center fw-bold">@(((int)product.ProductionTimeHours).ToString())</td>
                                     <td class="text-center" onclick="event.stopPropagation();">
                                         <a asp-controller="Workshops" asp-action="Index" asp-route-id="@product.Id" class="btn btn-sm" style="background-color: #355CBD; color: white;">Цеха</a>
                                     </td>

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FurnitureCompany.Models  // ← это правильно
+namespace FurnitureCompany.Models 
 {
     public class ProductEditViewModel
     {
