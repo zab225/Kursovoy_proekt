@@ -1,11 +1,12 @@
 ﻿using FurnitureCompany.Data;
+using FurnitureCompany.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// регистрируем хелпер как синглтон 
 builder.Services.AddSingleton<DatabaseHelper>();
+builder.Services.AddScoped<RawMaterialCalculator>();
 
 var app = builder.Build();
 

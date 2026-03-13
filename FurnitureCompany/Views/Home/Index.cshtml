@@ -1,4 +1,4 @@
-﻿@model List<FurnitureCompany.Models.Product>
+@model List<FurnitureCompany.Models.Product>
 
 @{
     ViewData["Title"] = "Продукция";
@@ -42,17 +42,20 @@
                                 <th>Артикул</th>
                                 <th>Мин. стоимость (₽)</th>
                                 <th class="text-center">Время изготовления (ч)</th>
+                                <th class="text-center">Цеха</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var product in Model)
                             {
-                                <!-- Клик по строке открывает редактирование -->
                                 <tr onclick="window.location='@Url.Action("Edit", "Products", new { id = product.Id })'" style="cursor: pointer;">
                                     <td>@product.Name</td>
                                     <td>@product.Article</td>
                                     <td>@product.MinPartnerCost.ToString("0.00")</td>
-                                    <td class="text-center fw-bold">@product.ProductionTimeHours</td>
+                                    <td class="text-center fw-bold">@(((int)product.ProductionTimeHours).ToString())</td>
+                                    <td class="text-center" onclick="event.stopPropagation();">
+                                        <a asp-controller="Workshops" asp-action="Index" asp-route-id="@product.Id" class="btn btn-sm" style="background-color: #355CBD; color: white;">Цеха</a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>

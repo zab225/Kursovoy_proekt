@@ -1,0 +1,107 @@
+@model FurnitureCompany.Models.ReportViewModel
+
+@{
+    ViewData["Title"] = "Отчёты";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4" style="color: #355CBD;">Отчёты и аналитика</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-muted">Всего продукции</h5>
+                    <p class="display-6 mb-0" style="color: #355CBD;">@Model.TotalProductsCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-muted">Суммарная мин. стоимость (₽)</h5>
+                    <p class="display-6 mb-0" style="color: #355CBD;">@Model.TotalMinCost.ToString("N2")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-muted">Средняя стоимость за единицу (₽)</h5>
+                    <p class="display-6 mb-0" style="color: #355CBD;">@Model.AverageMinCost.ToString("N2")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header" style="background-color: #355CBD; color: white;">
+                    <h5 class="mb-0">Количество по типам продукции</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.ProductsByType.Count == 0)
+                    {
+                        <p class="text-muted mb-0">Нет данных</p>
+                    }
+                    else
+                    {
+                        <table class="table table-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Тип</th>
+                                    <th class="text-end">Кол-во</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ProductsByType)
+                                {
+                                    <tr>
+                                        <td>@item.TypeName</td>
+                                        <td class="text-end">@item.Count</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header" style="background-color: #355CBD; color: white;">
+                    <h5 class="mb-0">Топ-5 по стоимости</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.TopProductsByCost.Count == 0)
+                    {
+                        <p class="text-muted mb-0">Нет данных</p>
+                    }
+                    else
+                    {
+                        <table class="table table-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Наименование</th>
+                                    <th class="text-end">Мин. стоимость (₽)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model.TopProductsByCost)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Products" asp-action="Edit" asp-route-id="@p.Id">@p.Name</a>
+                                        </td>
+                                        <td class="text-end">@p.MinPartnerCost.ToString("N2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

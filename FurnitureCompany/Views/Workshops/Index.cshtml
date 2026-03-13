@@ -1,0 +1,98 @@
+@model List<FurnitureCompany.Models.Workshop>
+@{
+    var product = ViewBag.Product as FurnitureCompany.Models.Product;
+    ViewData["Title"] = "Цеха для производства";
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('calcForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const fd = new FormData(form);
+            fetch(form.action, { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(d => { document.getElementById('rawResult').textContent = d.rawMaterial === -1 ? 'Ошибка (неверные данные)' : d.rawMaterial + ' ед.'; })
+                .catch(() => { document.getElementById('rawResult').textContent = 'Ошибка'; });
+        });
+    </script>
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4" style="color: #355CBD;">Цеха для производства</h2>
+
+    @if (product != null)
+    {
+        <div class="mb-4">
+            <h5 class="text-muted">Продукт: @product.Name</h5>
+            <p class="text-muted mb-0">Артикул: @product.Article</p>
+        </div>
+    }
+
+    <div class="mb-3">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">← К списку продукции</a>
+        <a asp-controller="Products" asp-action="Edit" asp-route-id="@product?.Id" class="btn" style="background-color: #355CBD; color: white;">Редактировать продукт</a>
+    </div>
+
+    @if (product != null)
+    {
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header" style="background-color: #355CBD; color: white;">
+                <h5 class="mb-0">Расчёт сырья</h5>
+            </div>
+            <div class="card-body">
+                <form id="calcForm" asp-controller="Workshops" asp-action="CalculateRawMaterial" asp-route-productId="@product.Id" method="post">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-2">
+                            <label class="form-label">Кол-во продукции</label>
+                            <input type="number" name="quantity" class="form-control" min="1" value="1" required />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Параметр 1</label>
+                            <input type="number" name="param1" class="form-control" step="0.01" min="0.01" placeholder="0.00" required />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Параметр 2</label>
+                            <input type="number" name="param2" class="form-control" step="0.01" min="0.01" placeholder="0.00" required />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn" style="background-color: #355CBD; color: white;">Рассчитать</button>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>Сырьё:</strong> <span id="rawResult" class="text-primary">—</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">Нет данных о цехах для данного продукта.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color: #355CBD; color: white;">
+                    <tr>
+                        <th>Название цеха</th>
+                        <th class="text-center">Кол-во человек</th>
+                        <th class="text-center">Время изготовления (ч)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var w in Model)
+                    {
+                        <tr>
+                            <td>@w.Name</td>
+                            <td class="text-center">@w.WorkersCount</td>
+                            <td class="text-center">@w.ProductionTimeHours.ToString("0.##")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
